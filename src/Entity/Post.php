@@ -19,6 +19,9 @@ class Post
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $preview = null;
+    
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $text = null;
 
     #[ORM\Column]
     private ?int $author = null;
@@ -54,7 +57,19 @@ class Post
 
         return $this;
     }
+    
+    public function getText(): ?string 
+    {
+        return $this->text;
+    }
 
+    public function setText(?string $text): self
+    {
+        $this->text = $text;
+        
+        return $this;
+    }
+    
     public function getAuthor(): ?int
     {
         return $this->author;

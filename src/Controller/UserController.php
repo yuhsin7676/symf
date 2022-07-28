@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,4 +18,26 @@ class UserController extends AbstractController
             'path' => 'src/Controller/UserController.php',
         ]);
     }
+    
+    #[Route('/create_user', name: 'create_user')]
+    public function create(ManagerRegistry $doctrine): JsonResponse
+    {
+        $name = $_GET['name'];
+        $date = date_create_immutable("now", null);
+        
+        $user = new User();
+        $user->setName($name)
+                ->setCreatedAt($date);
+        
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $str = $date->format('Y-m-d');
+        return $this->json([
+            'message' => 'User "'.$name.'" has been created at "'.$str.'"',
+            'id' => $user->getId(),
+        ]);
+    }
+    
 }
