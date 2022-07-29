@@ -40,4 +40,22 @@ class UserController extends AbstractController
         ]);
     }
     
+    #[Route('/find_all_user', name: 'find_all_user')]
+    public function find_all(ManagerRegistry $doctrine): JsonResponse
+    {
+        $repository = $doctrine->getRepository(User::class);
+        $users = $repository->findAll();
+        
+        $userList = [];
+        foreach($users as $value){
+            $userList[] = [
+                'id' => $value->getId(), 
+                'name' => $value->getName(), 
+                'created_at' => $value->getCreatedAt()
+            ];
+        }
+        
+        return $this->json($userList);
+    }
+    
 }

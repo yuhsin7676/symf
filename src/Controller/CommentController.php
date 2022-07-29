@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,5 +46,31 @@ class CommentController extends AbstractController
             'message' => 'Comment for "'.$post.'" has been created at "'.$str.'"',
             'id' => $comment->getId(),
         ]);
+    }
+    
+    #[Route('/find_comment_by_post', name: 'find_comment_by_post')]
+    public function find_all(ManagerRegistry $doctrine): JsonResponse
+    {
+        $post = $_GET['post'];
+        
+        $repository = $doctrine->getRepository(Comment::class);
+        $comments = $repository->findBy(
+            ['post' => $post],
+        );
+        
+        $repository = $doctrine->getRepository(User::class);
+        $commentList = [];
+        foreach($comments as $value){
+            $author = $repository->find($value->getAuthor());
+            $authorObj = ['id' => $author->getId(), 'name' => $author->getName()];
+            $commentList[] = [
+                'id' => $value->getId(), 
+                'text' => $value->getText(), 
+                'author' => $authorObj, 
+                'created_at' => $value->getCreatedAt()
+            ];
+        }
+        
+        return $this->json($commentList);
     }
 }
