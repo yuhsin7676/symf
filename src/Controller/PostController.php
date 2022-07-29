@@ -23,10 +23,10 @@ class PostController extends AbstractController
     #[Route('/create_post', name: 'create_post')]
     public function create(ManagerRegistry $doctrine): JsonResponse
     {
-        $title = $_GET['title'];
-        $preview = $_GET['preview'];
-        $text = $_GET['text'];
-        $author = $_GET['author'];
+        $title = $_POST['title'];
+        $preview = $_POST['preview'];
+        $text = $_POST['text'];
+        $author = $_POST['author'];
         $date = date_create_immutable("now", null);
         
         $post = new Post();
@@ -67,7 +67,7 @@ class PostController extends AbstractController
     #[Route('/find_post', name: 'find_post')]
     public function find(ManagerRegistry $doctrine): JsonResponse
     {
-        $id = $_GET['id'];
+        $id = $_POST['id'];
         $repository = $doctrine->getRepository(Post::class);
         $post = $repository->find($id);
         

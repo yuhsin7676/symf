@@ -26,9 +26,9 @@ class CommentController extends AbstractController
     #[Route('/create_comment', name: 'create_comment')]
     public function create(ManagerRegistry $doctrine): JsonResponse
     {
-        $post = $_GET['post'];
-        $text = $_GET['text'];
-        $author = $_GET['author'];
+        $post = $_POST['post'];
+        $text = $_POST['text'];
+        $author = $_POST['author'];
         $date = date_create_immutable("now", null);
         
         $comment = new Comment();
@@ -51,7 +51,7 @@ class CommentController extends AbstractController
     #[Route('/find_comment_by_post', name: 'find_comment_by_post')]
     public function find_all(ManagerRegistry $doctrine): JsonResponse
     {
-        $post = $_GET['post'];
+        $post = $_POST['post'];
         
         $repository = $doctrine->getRepository(Comment::class);
         $comments = $repository->findBy(

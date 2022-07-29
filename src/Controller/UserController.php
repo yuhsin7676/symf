@@ -6,23 +6,18 @@ use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/user', name: 'app_user')]
-    public function index(): JsonResponse
-    {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/UserController.php',
-        ]);
-    }
     
     #[Route('/create_user', name: 'create_user')]
     public function create(ManagerRegistry $doctrine): JsonResponse
     {
-        $name = $_GET['name'];
+        $name = $_POST['name'];
         $date = date_create_immutable("now", null);
         
         $user = new User();
@@ -56,6 +51,17 @@ class UserController extends AbstractController
         }
         
         return $this->json($userList);
+    }
+    
+    #[Route('/choose_user', name: 'choose_user')]
+    public function choose_user(ManagerRegistry $doctrine): Response
+    {
+        $user = $_POST['user'];
+        $username = $_POST['username'];
+        $session = new Session();
+        $session->set('user', $user);
+        $session->set('username', $username);
+        return new Response("");
     }
     
 }
