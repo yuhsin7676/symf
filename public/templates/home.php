@@ -140,12 +140,12 @@ function find_post(id){
         success: function(data){
             clear();
             var post_header = "<div class='post_header'>";
-            post_header += "<p><strong>" + data.author.name + "</strong>" + data.created_at.date + "</p>";
+            post_header += "<p><strong>" + data.author.name + "</strong> " + data.created_at.date + "</p>";
             post_header += "<h3>" + data.title + "</h3>";
             post_header += "<h5>" + data.preview + "</h5>";
             post_header += "</div>";
             post_container.innerHTML += post_header;
-            post_header += "<p>" + data.text + "</p>";
+            post_container.innerHTML += "<p>" + data.text + "</p>";
             post_container.innerHTML += "<button onclick='find_comment_by_post(" + id + ")'>Показать комментарии</button>";
         }
     });  
@@ -164,10 +164,12 @@ function find_comment_by_post(post){
         success: function(data){
             comment_container.innerHTML = "";
             for(var key in data){
-                post_container.innerHTML += "<div class='comment_container'>";
-                post_container.innerHTML += "<p class='comment_header'><strong>" + data[key].author.name + "</strong>" + data[key].created_at.date + "</p>";
-                post_container.innerHTML += "<p>" + data[key].text + "</p>";
-                post_container.innerHTML += "</div>";
+                
+                var comment_item = "<div class='comment_item'>";
+                comment_item += "<p class='comment_header'><strong>" + data[key].author.name + "</strong> " + data[key].created_at.date + "</p>";
+                comment_item += "<p>" + data[key].text + "</p>";
+                comment_item += "</div>";
+                comment_container.innerHTML += comment_item;
             }
             comment_container.innerHTML += "<textarea id = 'my_comment' placeholder = 'Оставьте здесь комментарий.'></textarea><br>";
             comment_container.innerHTML += "<button onclick='create_comment(" + post + ", " + currentUser_id + ")'>Отправить</button>";
