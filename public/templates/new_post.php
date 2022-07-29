@@ -1,4 +1,5 @@
 <html>
+    <link rel="stylesheet" href="style.css">
 <body>
     
     <h3>Пользователь: <?php echo $username?></h3>
@@ -6,7 +7,7 @@
     <button onclick="document.location.href = '/home'">На главную</button>
     <p>Название</p><input id="input_title" type="text">
     <p>Превью</p><textarea id="textarea_preview" type="text"></textarea>
-    <p>Текст</p><textarea id="textarea_text"></textarea>
+    <p>Текст</p><textarea id="textarea_text"></textarea><br>
     <button onclick = "create_post()">Отправить</button>
     
 </body>
