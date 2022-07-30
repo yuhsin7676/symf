@@ -31,9 +31,10 @@ var currentUser_id = <?php echo $user;?>;
 find_all_user();
 
 //
-function create_comment(post, author){
+function create_comment(post){
 
     var text = document.getElementById("my_comment").value;
+    var author = currentUser_id;
 
     $.ajax({
         url: "/create_comment",
